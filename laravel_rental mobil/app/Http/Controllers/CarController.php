@@ -21,9 +21,7 @@ class CarController extends Controller
         $data['title'] = "List Mobil";
         $data['menu'] = 1;
         $cars = DB::table('tb_kendaraan')->get()->toArray();
-        //ngereturn array dari query builder laravel
         $data['cars'] = json_decode(json_encode($cars), true);
-        //catatan : besok2 pake notasi objek aja kalo nampilin data dari eloqeunt or dari db
         $data['no'] = 1;
         return view('car.index', $data);
     }
@@ -62,11 +60,10 @@ class CarController extends Controller
             $image_name = Image::make($request->file('gambar'))->resize(320, 240, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            //save the watermarked and standard image to disc and recording their names for db
             $location = $request->file('gambar')->store('public/uploads');
             $fileName = md5($location . microtime());
             $extension = '.' . explode("/", $image_name->mime())[1];
-            Storage::put('public/watermarked/' . $fileName . $extension, $image_name->encode());
+            Storage::put('public/mobil/' . $fileName . $extension, $image_name->encode());
         }
 
         $data['merek'] = $request['merek'];
@@ -129,11 +126,10 @@ class CarController extends Controller
             $image_name = Image::make($request->file('gambar'))->resize(320, 240, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            //save the watermarked and standard image to disc and recording their names for db
             $location = $request->file('gambar')->store('public/uploads');
             $fileName = md5($location . microtime());
             $extension = '.' . explode("/", $image_name->mime())[1];
-            Storage::put('public/watermarked/' . $fileName . $extension, $image_name->encode());
+            Storage::put('public/mobil/' . $fileName . $extension, $image_name->encode());
             $data['gambar'] = $fileName . $extension;
         }
 
@@ -158,6 +154,5 @@ class CarController extends Controller
     public function destroy($id)
     {
         DB::table('tb_kendaraan')->where('id_kendaraan', '=', $id)->delete();
-        return redirect()->route('car.index');
     }
 }

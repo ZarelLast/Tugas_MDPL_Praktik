@@ -13,7 +13,7 @@
     <div class="card card-secondary card-outline">
         <div class="row">
             <div class="col-3">
-                <img src="{{  url('storage/watermarked/'.$row->gambar) }}" alt="{{$row->merek}}" class="img-fluid">
+                <img src="{{  url('storage/mobil/'.$row->gambar) }}" alt="{{$row->merek}}" class="img-fluid">
             </div>
             <div class="col-6">
                 <div class="card-header">
@@ -37,7 +37,7 @@
         </div>
         <div class="row mt-5">
             <div class="col-12">
-                <form action="{{ route('returns.store') }}" method="POST">
+                <form action="{{ url('/pesan') }}" method="POST">
                     {{ csrf_field() }}
                     {{ method_field('POST') }}
                     <div class="row m-3">

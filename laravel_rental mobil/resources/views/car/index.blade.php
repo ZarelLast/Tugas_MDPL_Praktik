@@ -26,7 +26,7 @@
                     @foreach($cars as $row)
                     <tr>
                         <td>{{ $no++}}</td>
-                        <td><img src="{{  url('storage/watermarked/'.$row['gambar']) }}" alt=""></td>
+                        <td><img src="{{  url('storage/mobil/'.$row['gambar']) }}" alt=""></td>
                         <td>{{ $row['merek'] }}</td>
                         <td>{{ $row['nopol'] }}</td>
                         <td>{{ $row['deskripsi'] }}</td>
@@ -54,11 +54,11 @@
         let id = $(this).attr('data-id');
         if(confirm("Apa anda yakin akan menghapus? ")) {
             $.ajax({
-                url : "{{url('/')}}/car/"+id,
-                method : "POST",
+                url : "{{url('/admin/car/delete')}}/"+id,
+                method : "DElETE",
                 data : {
                     _token : "{{csrf_token()}}",
-                    _method : "DELETE",
+                    "id": id
                 }
             })
             .then(function(data){

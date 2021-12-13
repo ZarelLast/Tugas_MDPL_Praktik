@@ -15,12 +15,9 @@ class ReturnController extends Controller
     public function index(){
     	$data['menu'] = 2;
     	$data['title'] = 'List Peminjaman';
-        $nota = DB::table('tb_transaksi')->get()->toArray();
-        //ngereturn array dari query builder laravel
-        $data['peminjaman'] = json_decode(json_encode($nota), true);
+        $transaksi = Returns::All();
     	$data['no'] = 1;
-    	return view('returns.index', $data);
-        // return $data['peminjaman'];
+    	return view('returns.index', ['data'=>$data, 'transaksi'=>$transaksi]);
     }
 
     /**
@@ -38,7 +35,7 @@ class ReturnController extends Controller
         return view('returns.edit', $data);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -47,33 +44,7 @@ class ReturnController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $request->validate([
-            'nopol' => 'nullable',
-            'harga' => 'required',
-            'tgl_pinjam' => 'required',
-            'tgl_kembali' => 'required',
-            'waktu' => 'required',
-            'denda' => 'nullable',
-            'total' => 'required'
-        ]);
-
-        $data['id_pelanggan'] = Auth::user()->id_pelanggan;
-        $data['nopol'] = Car::Where('id_kendaraan', '=', $request['id_mobil'])->pluck('nopol')->toArray()[0];
-        $data['harga'] = $request['harga'];
-        $data['tgl_pinjam'] = $request['tgl_pinjam'];
-        $data['tgl_kembali'] = $request['tgl_kembali'];
-        $data['total'] = $request['total'];
-        $data['waktu'] = $request['waktu'];
-        if ($data['waktu'] < 0){
-            $data['denda'] = int((($data['harga']/100)*2)*$data['waktu']);
-        }else{
-            $data['denda'] = 0;
-        }
-
-        $data['total'] = $data['denda']+$data['total'];
-
-        $insert = Returns::create($data);
-        return redirect()->route('home');
+        //
     }
 
     /**
@@ -86,7 +57,6 @@ class ReturnController extends Controller
     public function update(Request $request, $id)
     {
         $validate = $request->validate([
-            'nopol' => 'required',
             'harga' => 'required',
             'tgl_pinjam' => 'required',
             'tgl_kembali' => 'required',
@@ -95,106 +65,29 @@ class ReturnController extends Controller
             'total' => 'nullable'
         ]);
 
-        $data['nopol'] = $request['nopol'];
         $data['harga'] = $request['harga'];
         $data['tgl_pinjam'] = $request['tgl_pinjam'];
         $data['tgl_kembali'] = $request['tgl_kembali'];
-        $data['waktu'] = date('d', (strtotime($data['tgl_kembali']) - strtotime($data['tgl_pinjam'])));
-        $sisa_waktu = date('d', ((strtotime($data['tgl_kembali'])) - (strtotime(date('d-m-Y\TH:i:s')))));
-        // return $sisa_waktu;
-        if ($sisa_waktu < 0){
-            $data['denda'] = int((($data['harga']/100)*2)*$sisa_waktu);
+        $data['waktu'] = $request['waktu'];
+        $date_now = date('d-m-Y\TH:i:s');
+        $sisa_waktu = (int) round((strtotime($date_now)-strtotime($data['tgl_kembali']))/3600);
+
+        if ($sisa_waktu > 0){
+            $data['denda'] = (int)((($data['harga']/100)*2)*$sisa_waktu);
         }else{
             $data['denda'] = 0;
         }
 
         $data['total'] = $data['denda']+$data['harga'];
-        // $request['harga']
-        //  - $data['tgl_pinjam']
+        if ($request['status'] == 'selesai'){
+            $data['status'] = $request['status'];
+            $status['status'] = 'tersedia';
+            $update = Car::where('nopol', $request['nopol'])->update($status);
+        }
         $update = Returns::find($id)->update($data);
+
         return redirect()->route('returns.index');
     }
-
-    // public function information(Request $request){
-    // 	$booking_code = $request->booking_code;
-    // 	//jika parameter kosong
-    // 	if($booking_code == ''){
-    // 		$request->session()->flash('warning', 'Select data rental from table below');
-    //     	return redirect()->route('returns.index');
-    // 	}
-
-    // 	$booking_table = Booking::where('booking_code', $booking_code)->first();
-    // 	//jika booking code tidak ditemukan
-    // 	if($booking_table->count() == 0){
-    // 		$request->session()->flash('warning', 'Data rental not found!');
-    //     	return redirect()->route('returns.index');
-    // 	}
-
-    // 	//denda (perhitungannya nambah 10% per harinya)
-    // 	if($booking_table->return_date_supposed <  date('Y-m-d')){
-    // 		$return_supposed = new DateTime($booking_table->return_date_supposed);
-    // 		$return_now = new DateTime(date('Y-m-d'));
-    // 		$selisih = $return_supposed->diff($return_now);
-    // 		for($i=1; $i<=$selisih->days; $i++){
-    // 			$fine = ($booking_table->price * $i.'0')/100;
-    // 		}
-    // 		$data['fine'] = $fine;
-    // 		$data['late'] = $selisih->days;
-    // 	} else {
-    // 		$data['fine'] = null;
-    // 		$data['late'] = null;
-    // 	}
-
-
-    // 	$data['payment'] = Returns::where('booking_code',$booking_code)->get()->first();
-    // 	$data['data'] = $booking_table;
-    // 	$data['client'] = Client::find($booking_table->client_id);
-    // 	$data['car'] = Car::find($booking_table->car_id);
-    // 	$data['total'] = $booking_table->price + $data['fine'] - $data['payment']->amount;
-    // 	$data['title'] = 'Return Process';
-    // 	$data['menu'] = 6;
-
-    // 	return view('returns.information', $data);
-    // }
-
-    // public function process(Request $request){
-    // 	$validate = $request->validate([
-    // 		'amount' => 'required|min:'.$request->total .'|numeric',
-    // 		'booking_code' => 'required',
-    // 	]);
-    // 	//kalau amount lebih besar dari total, otomatis data total yg jadi value amount
-    // 	//biar ga kelamaan ngitung males gw
-    // 	if($request->amount > $request->total){
-    // 		$request->amount = $request->total;
-    // 	}
-
-    // 	//dd($request->toArray());
-
-    // 	//update table booking
-    // 	$update_booking = Booking::where('booking_code', $request->booking_code)->update([
-    // 		'return_date' => date('Y-m-d'),
-    // 		'fine' => $request->fine,
-    // 		'status' => 'paid'
-    // 	]);
-
-    // 	//add to table payment
-    // 	Returns::create([
-    // 		'type' => $request->type,
-    // 		'amount' => $request->amount,
-    // 		'date' => date('Y-m-d'),
-    // 		'client_id' => $request->client_id,
-    // 		'employees_id' => Auth::user()->id,
-    // 		'booking_code' => $request->booking_code,
-    // 	]);
-
-    // 	//change car status to available
-    // 	$car = Car::find($request->car_id);
-    //     $car->available = '1';
-    //     $car->save();
-
-    //     $request->session()->flash('success', 'Return Proccess successfully!');
-    //     return redirect()->route('returns.index');
-    // }
      /**
      * Remove the specified resource from storage.
      *
@@ -203,7 +96,21 @@ class ReturnController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('tb_transaksi')->where('id_transaksi', '=', $id)->delete();
-        return redirect()->route('returns.index');
+        $data = Returns::find($id);
+        $status['status'] = 'tersedia';
+        $update = Car::where('id_kendaraan', $data['id_kendaraan'])->update($status);
+        $data->delete();
+    }
+
+    public function downloadCVS()
+    {
+        $table = Returns::all();
+        $file = fopen('file.csv', 'w');
+        foreach ($table as $row) {
+            fputcsv($file, $row->toArray());
+        }
+        fclose($file);
+        // return 'h';
+        // dd($table);
     }
 }

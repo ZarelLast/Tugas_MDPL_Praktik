@@ -27,19 +27,31 @@
                 <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
                 <li class="nav-item">
+                    @if(isset($menu))
                     <a href=" {{ route('car.index') }} " class="nav-link {{($menu==1 ? 'active' : '')}}">
+                    @else
+                    <a href=" {{ route('car.index') }} " class="nav-link {{($data['menu']==1 ? 'active' : '')}}">
+                    @endif
                         <i class="fa fa-car nav-icon"></i>
                         <p>List Mobil</p>
                     </a>
                 </li>
                 <li class="nav-item">
+                    @if(isset($menu))
                     <a href=" {{ route('returns.index') }} " class="nav-link {{($menu==2 ? 'active' : '')}}">
+                    @else
+                    <a href=" {{ route('returns.index') }} " class="nav-link {{($data['menu']==2 ? 'active' : '')}}">
+                    @endif
                         <i class="fa fa-dollar nav-icon"></i>
                         <p>List Peminjaman</p>
                     </a>
                 </li>
                 <li class="nav-item">
+                    @if(isset($menu))
                     <a href=" {{ route('pelanggan.index') }} " class="nav-link {{($menu==3 ? 'active' : '')}}">
+                    @else
+                    <a href=" {{ route('pelanggan.index') }} " class="nav-link {{($data['menu']==3 ? 'active' : '')}}">
+                    @endif
                         <i class="fa fa-users nav-icon"></i>
                         <p>List Pelanggan</p>
                     </a>

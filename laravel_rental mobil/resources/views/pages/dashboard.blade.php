@@ -13,7 +13,7 @@
         <div class="card card-secondary card-outline">
             <div class="row">
                 <div class="col-3">
-                    <img src="{{  url('storage/watermarked/'.$row->gambar) }}" alt="{{$row->merek}}" class="img-fluid">
+                    <img src="{{  url('storage/mobil/'.$row->gambar) }}" alt="{{$row->merek}}" class="img-fluid">
                 </div>
                 <div class="col-6">
                     <div class="card-header">

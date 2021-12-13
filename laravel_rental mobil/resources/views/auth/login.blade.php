@@ -36,21 +36,25 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-12">
                             <div class="checkbox icheck">
                                 <label>
                                     <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                                 </label>
                             </div>
                         </div>
-                        <!-- /.col -->
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Log In</button>
                         </div>
-                        <!-- /.col -->
                     </div>
                 </form>
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <a class="btn btn-success btn-block btn-flat" href="{{route('register')}}">Daftar</a>
+                    </div>
+                </div>
             </div>
         <!-- /.login-card-body -->
         </div>

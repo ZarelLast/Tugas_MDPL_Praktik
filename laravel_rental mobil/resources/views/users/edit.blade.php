@@ -25,7 +25,7 @@
                         </div>
                         <div class="form-group">
                             <p>Alamat</p>
-                            <input type="text" class="form-control" required name="alamat" value="{{ $pelanggan->alamat }}">
+                            <input type="text" class="form-control"  name="alamat" value="{{ $pelanggan->alamat }}">
                         </div>
                         <div class="form-group">
                             <p>Email</p>
@@ -36,11 +36,11 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <p>No. Telp</p>
-                            <input type="text" class="form-control" required name="telp" value="{{ $pelanggan->telp }}">
+                            <input type="text" class="form-control"  name="telp" value="{{ $pelanggan->telp }}">
                         </div>
                         <div class="form-group">
                             <p>Password</p>
-                            <input type="text" class="form-control" required name="password_new" value="{{ $pelanggan->password }}" >
+                            <input type="password" class="form-control" required name="password_new" value="{{ $pelanggan->password }}" >
                             <input type="hidden" class="form-control" required name="password_old" value="{{ $pelanggan->password }}" >
                         </div>
                     </div>

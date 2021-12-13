@@ -7,8 +7,11 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    @if (isset($title))
     <title>{{ $title }} - DSC Rentcar</title>
+    @else
+    <title>{{ $data['title'] }} - DSC Rentcar</title>
+    @endif
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -35,6 +38,7 @@
 </head>
 @guest
     @yield('login')
+    @yield('register')
 @else
 
 @if(Auth::user()->email == "admin@gmail.com")
@@ -48,7 +52,7 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>{{ $title }}</h1>
+                                {{-- <h1>{{ $title }}</h1> --}}
                             </div>
                         </div>
                         <!-- flashmessage -->
@@ -120,10 +124,13 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="{{ route('home') }}" class="nav-link">Home</a>
+                <a href="{{ route('home') }}" class="nav-link {{($menu==0 ? 'active' : '')}}">Home</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Contact</a>
+                <a href="#" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('profile').'/'.Auth::user()->id_pelanggan }}" class="nav-link {{($menu==2 ? 'active' : '')}}">Profile</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link" href="{{ route('logout') }}"
@@ -144,7 +151,12 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>{{ $title }}</h1>
+
+                    @if (empty($title))
+                        <h1>{{ $data['title'] }}</h1>
+                    @else
+                        <h1>{{ $title }}</h1>
+                    @endif
                 </div>
             </div>
             <!-- flashmessage -->

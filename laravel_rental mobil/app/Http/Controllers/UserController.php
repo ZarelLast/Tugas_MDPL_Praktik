@@ -15,13 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
         $data['title'] = "List Pelanggan";
         $data['menu'] = 3;
         $users = DB::table('tb_pelanggan')->get()->toArray();
-        //ngereturn array dari query builder laravel
         $data['users'] = json_decode(json_encode($users), true);
-        //catatan : besok2 pake notasi objek aja kalo nampilin data dari eloqeunt or dari db
         $data['no'] = 1;
         return view('users.index', $data);
     }
@@ -33,9 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
         return view('pages.user.create');
-
     }
 
     /**
@@ -86,8 +81,8 @@ class UserController extends Controller
     {
         $validate = $request->validate([
             'nama' => 'required',
-            'telp' => 'required',
-            'alamat' => 'required',
+            'telp' => 'nullable',
+            'alamat' => 'nullable',
             'email' => 'required',
             'password_new' => 'required',
         ]);
@@ -96,7 +91,7 @@ class UserController extends Controller
         $data['telp'] = $request['telp'];
         $data['alamat'] = $request['alamat'];
         $data['email'] = $request['email'];
-        if($request['password_old'] != bcrypt($request['password_new'])){
+        if($request['password_old'] != $request['password_new']){
             $data['password'] = bcrypt($request['password_new']);
         }else{
             $data['password'] = $request['password_old'];
@@ -114,8 +109,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        dd($id);
-        DB::table('tb_pelanggan')->where('id_pelanggan', '=', $id)->delete();
-        return redirect()->route('users.index');
+        $data = User::find($id);
+        $data->delete();
     }
 }

@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('tb_pelanggan', function (Blueprint $table) {
-            $table->increments('id_pelanggan');
+            $table->string('id_pelanggan')->primary();
             $table->string('nama')->nullable();
             $table->string('alamat')->nullable();
             $table->string('telp')->nullable();

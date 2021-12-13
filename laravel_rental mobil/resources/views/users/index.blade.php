@@ -33,31 +33,13 @@
                         <td>{{ $row['email'] }}</td>
                         <td>{{ $row['password'] }}</td>
                         <td>
+                            @if($row['email'] != "admin@gmail.com")
                             <a href="{{ route('pelanggan.edit',  ['id_pelanggan' => $row['id_pelanggan']]) }}" class="btn btn-sm btn-warning"><i class="fa fa-cog"></i></a>
                             <a data-id="{{$row['id_pelanggan']}}" class="btn btn-sm btn-danger delete-btn"><i class="fa fa-trash"></i></a>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
-                    @push('scripts')
-                    <script>
-                        $(".delete-btn").click(function(){
-                            let id = $(this).attr('data-id');
-                            if(confirm("Apa anda yakin akan menghapus? ")) {
-                                $.ajax({
-                                    url : "{{url('/')}}/pelanggan/"+id,
-                                    method : "POST",
-                                    data : {
-                                        _token : "{{csrf_token()}}",
-                                        _method : "DELETE",
-                                    }
-                                })
-                                .then(function(data){
-                                    location.reload();
-                                });
-                            }
-                        })
-                    </script>
-                    @endpush
                 </tbody>
 
             </table>
@@ -67,4 +49,23 @@
 
 @endsection
 
-
+@push('scripts')
+<script>
+    $(".delete-btn").click(function(){
+        let id = $(this).attr('data-id');
+        var token = "{{csrf_token()}}";
+        if(confirm("Apa anda yakin akan menghapus? ")) {
+            $.ajax({
+                type: "DELETE",
+                url : "{{url('/admin')}}/pelanggan/delete/"+id,
+                data : {
+                    _token : token,
+                    "id": id,
+                }
+            }).then(function(data){
+                location.reload();
+            });
+        }
+    })
+</script>
+@endpush
