@@ -39,4 +39,10 @@ Branch     - Pembuat </br>
 5200411416 - Muhammad Ilham Triwibowo (User Stories)</br>
 5200411417 - Rusli Pramono (Sprint)</br>
 
+# Agile Test Driven Development
+5200411332 - Dwi Muhammad Faza (BAB 2 Pembahasan)</br>
+5200411409 - Pramudea Yohano Firmansyah (BAB 4 Penutup(Perbandingan dengan metode Waterfall,Prototype,RAD))</br>
+5200411416 - Muhammad Ilham Triwibowo (BAB 3 Contoh Metode)</br>
+5200411417 - Rusli Pramono (BAB 1 Pendahuluan)</br>
+
 # Link Repository Github Kelompok 6: [https://github.com/ZarelLast/Tugas_MDPL_Praktik](https://github.com/ZarelLast/Tugas_MDPL_Praktik)
