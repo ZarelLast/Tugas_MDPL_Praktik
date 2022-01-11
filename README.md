@@ -45,7 +45,7 @@ Branch     - Pembuat </br>
 5200411416 - Muhammad Ilham Triwibowo (BAB 3 Contoh Metode)</br>
 5200411417 - Rusli Pramono (BAB 1 Pendahuluan, PPT)</br>
 
-# DevOps
+# DevOps - docker
 5200411332 - Dwi Muhammad Faza (BAB 1 Pendahuluan)</br>
 5200411409 - Pramudea Yohano Firmansyah (BAB 4 Penutup(Perbandingan dengan metode Waterfall,Prototype,RAD,DevOps))</br>
 5200411416 - Muhammad Ilham Triwibowo (BAB 3 Contoh Metode)</br>
